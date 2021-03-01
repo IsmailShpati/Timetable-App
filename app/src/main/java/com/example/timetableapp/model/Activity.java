@@ -5,6 +5,8 @@ public class Activity {
     private Time startTime, endTime;
     private int repeatingDay;
 
+    //To put a meeting link
+    private String activityLink;
     public Activity(){
     }
 
@@ -60,5 +62,13 @@ public class Activity {
 
     public void setRepeatingDay(int repeatingDay) {
         this.repeatingDay = repeatingDay;
+    }
+
+    public void setActivityLink(String activityLink){
+        this.activityLink = activityLink;
+    }
+
+    public String getActivityLink(){
+        return activityLink;
     }
 }
