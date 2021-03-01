@@ -20,4 +20,15 @@ public class Time {
     public void setMinute(int minute){
         this.minute = minute;
     }
+
+    @Override
+    public String toString(){
+        return (zeroPadding(hour) + ":" + zeroPadding(minute));
+    }
+
+    private String zeroPadding(int num){
+        if(num < 10)
+            return "0"+num;
+        return num+"";
+    }
 }

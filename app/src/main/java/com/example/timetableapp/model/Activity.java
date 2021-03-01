@@ -1,20 +1,29 @@
 package com.example.timetableapp.model;
 
+import android.util.Log;
+
 public class Activity {
     private String name, description;
     private Time startTime, endTime;
     private int repeatingDay;
 
     //To put a meeting link
-    private String activityLink;
+    private Link activityLink;
     public Activity(){
     }
 
-    public Activity(String name, Time startTime, Time endTime){
+    private Activity(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
+    public Activity(String name, String description, Time startTime, Time endTime, Link activityLink){
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.description = description;
+        this.activityLink = activityLink;
     }
+
 
     public String getName() {
         return name;
@@ -64,11 +73,16 @@ public class Activity {
         this.repeatingDay = repeatingDay;
     }
 
-    public void setActivityLink(String activityLink){
+    public void setActivityLink(Link activityLink){
         this.activityLink = activityLink;
     }
 
-    public String getActivityLink(){
+    public Link getActivityLink(){
         return activityLink;
+    }
+
+    public String getTimeString(){
+        Log.d("Activity Time String", startTime.toString() + " - " + endTime.toString());
+        return (startTime.toString() + " - " + endTime.toString());
     }
 }
