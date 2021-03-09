@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/nameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="48dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/nameLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.74"
+        app:layout_constraintStart_toEndOf="@+id/nameLabel"
+        app:layout_constraintTop_toTopOf="@+id/nameLabel"
+        app:layout_constraintVertical_bias="0.783" />
+
+    <TextView
+        android:id="@+id/descriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/nameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/nameLabel"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/descriptionLabel"
+        app:layout_constraintEnd_toEndOf="@+id/editTextName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextName"
+        app:layout_constraintTop_toTopOf="@+id/descriptionLabel"
+        app:layout_constraintVertical_bias="0.346" />
+
+    <TextView
+        android:id="@+id/linkLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/link"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/descriptionLabel"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/editTextLink"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/linkLabel"
+        app:layout_constraintEnd_toEndOf="@+id/editTextDescription"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextDescription"
+        app:layout_constraintTop_toTopOf="@+id/linkLabel"
+        app:layout_constraintVertical_bias="0.576" />
+
+    <TextView
+        android:id="@+id/linkDisplayLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/linkDisplay"
+        app:layout_constraintStart_toStartOf="@+id/linkLabel"
+        app:layout_constraintTop_toBottomOf="@+id/linkLabel" />
+
+    <EditText
+        android:id="@+id/editTextLinkDisplay"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/linkDisplayLabel"
+        app:layout_constraintEnd_toEndOf="@+id/editTextLink"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextLink"
+        app:layout_constraintTop_toTopOf="@+id/linkDisplayLabel"
+        app:layout_constraintVertical_bias="0.461" />
+
+    <TextView
+        android:id="@+id/startTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/startTime"
+        app:layout_constraintStart_toStartOf="@+id/linkDisplayLabel"
+        app:layout_constraintTop_toBottomOf="@+id/linkDisplayLabel" />
+
+    <TextView
+        android:id="@+id/endTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:text="@string/endTime"
+        app:layout_constraintStart_toStartOf="@+id/startTimeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/startTimeLabel" />
+
+    <Button
+        android:id="@+id/cancleBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/saveBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="onCancel"/>
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="onSave"/>
+
+    <TimePicker
+        android:id="@+id/timePickerStart"
+        android:layout_width="239dp"
+        android:layout_height="94dp"
+        android:layout_marginStart="44dp"
+        android:timePickerMode="spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/startTimeLabel"
+        app:layout_constraintEnd_toEndOf="@+id/editTextLinkDisplay"
+        app:layout_constraintStart_toEndOf="@+id/startTimeLabel"
+        app:layout_constraintTop_toTopOf="@+id/startTimeLabel"
+        app:layout_constraintVertical_bias="0.506" />
+
+    <TimePicker
+        android:id="@+id/timePickerEnd"
+        android:layout_width="239dp"
+        android:layout_height="94dp"
+        android:layout_marginStart="36dp"
+        android:timePickerMode="spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/endTimeLabel"
+        app:layout_constraintEnd_toEndOf="@+id/timePickerStart"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/timePickerStart"
+        app:layout_constraintTop_toTopOf="@+id/endTimeLabel"
+        app:layout_constraintVertical_bias="0.533" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
