@@ -1,0 +1,27 @@
+DataManager dataManager = new DataManager(this);
+      
+          dataManager.deleteAll();
+          Activity activity = new Activity();
+          activity.setName("Ismail");
+          activity.setDescription("lflfl");
+          activity.setActivityLink(new Link("Link","httpsa"));
+          activity.setRepeatingDay(1);
+          activity.setStartTime(1, 20);
+          activity.setEndTime(2, 30);
+          dataManager.insert(activity);
+          Cursor c = dataManager.selectAll();
+          c.moveToFirst();
+          int id = c.getColumnIndex("id");
+          int nameIndex = c.getColumnIndex("name");
+          int descIndex = c.getColumnIndex("description");
+          int dayIndex = c.getColumnIndex("day");
+          
+          Reading information from the cursor
+          do {
+  
+              
+            Log.e("Data in row: " , "ID[ "+ id+ "] Name["+c.getString(nameIndex) +
+                    "]; Description[" +c.getString(descIndex) + "]; Day["
+            +c.getInt(dayIndex)+"]");
+  
+          } while (c.moveToNext());
