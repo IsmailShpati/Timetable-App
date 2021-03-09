@@ -1,5 +1,4 @@
 # Timetable-App
-Timetable app
 This is an android application built using native Java with the Android SDK. The purpose of this project was to better grasp the concepts of android development.
 The app uses a database to store the activities you have during the day. You can add, edit or delete activties and also set up alarms for the activities.
 
