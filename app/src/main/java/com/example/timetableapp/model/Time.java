@@ -1,6 +1,8 @@
 package com.example.timetableapp.model;
 
-public class Time {
+import java.io.Serializable;
+
+public class Time implements Serializable {
     private int hour, minute;
 
     public Time(int hour, int minute){

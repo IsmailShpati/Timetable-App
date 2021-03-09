@@ -7,6 +7,7 @@ public class Day {
     private ArrayList<Activity> activities;
 
     public Day(){
+        activities = new ArrayList<>();
     }
 
     public ArrayList<Activity> getActivities(){

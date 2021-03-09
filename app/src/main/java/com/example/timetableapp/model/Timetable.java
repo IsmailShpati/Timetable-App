@@ -1,40 +1,27 @@
 package com.example.timetableapp.model;
 
 import android.util.Log;
-import android.widget.CalendarView;
-import android.widget.Toast;
+import com.example.timetableapp.DataManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Timetable {
     private ArrayList<Day> days = new ArrayList<>();
+    private final DataManager dataManager;
 
-    public Timetable(){
+//    public Timetable(ArrayList<Day> days){
+//        this.days = days;
+//        for(Day d : days){
+//            for(Activity a : d.getActivities()){
+//                Log.e("Inside Timetable()", "Name=["+a.getName()+"] Day=["+a.getRepeatingDay());
+//            }
+//        }
+//    }
 
-        Day monday = new Day();
-        ArrayList<Activity> mondayActivities = new ArrayList<>();
-        Activity mondayActivity = new Activity("First Activity", "desc",new Time(8, 30),
-                new Time(9, 10),  new Link("link","https://stackoverflow.com/questions/32136973/how-to-get-a-context-in-a-recycler-view-adapter"));
-        Activity mondayActivity2 = new Activity("Second Activity", "desc",new Time(12,
-                30), new Time(13, 10),   new Link("link","https://stackoverflow.com/questions/32136973/how-to-get-a-context-in-a-recycler-view-adapter"));
-        mondayActivities.add(mondayActivity);
-        mondayActivities.add(mondayActivity2);
-        monday.setActivities(mondayActivities);
-
-        ArrayList<Activity> wednesdayActivities = new ArrayList<>();
-        Activity wednesdayActivity = new Activity("First Activity", "desc",new Time(8, 30), new Time(9, 10),   new Link("link","https://stackoverflow.com/questions/32136973/how-to-get-a-context-in-a-recycler-view-adapter"));
-        Activity wednesdayActivity2 = new Activity("Second Activity", "desc",new Time(12, 30), new Time(13, 10),   new Link("link","https://stackoverflow.com/questions/32136973/how-to-get-a-context-in-a-recycler-view-adapter"));
-        Day wednesday = new Day();
-        wednesdayActivities.add(wednesdayActivity);
-        wednesdayActivities.add(wednesdayActivity2);
-        wednesday.setActivities(wednesdayActivities);
-        //It goes sunday, monday, tuesday
-        days.add(monday);
-        days.add(monday);
-        days.add(wednesday);
-        days.add(wednesday);
-        days.add(new Day());
+    public Timetable(DataManager dataManager){
+        this.dataManager = dataManager;
+        this.days = dataManager.selectAll();
     }
 
     public Day getCurrentDay(){
@@ -43,5 +30,26 @@ public class Timetable {
         return days.get(day-1);
     }
 
+    public Day getDay(int day){
+        return days.get(day-1);
+    }
+
     //Handle updates on timetable
+    public void addActivity(Activity activity){
+        int day = activity.getRepeatingDay();
+        days.get(day-1).addActivity(activity);
+        dataManager.insert(activity);
+    }
+
+    public void removeActivity(Activity activity) {
+        int day = activity.getRepeatingDay();
+        days.get(day-1).getActivities().remove(activity);
+        dataManager.delete(activity);
+    }
+
+    public void updateActivity(Activity oldActivity, Activity newActivity){
+        int day = oldActivity.getRepeatingDay();
+        days.set(day-1, dataManager.selectDay(day));
+        dataManager.update(oldActivity, newActivity);
+    }
 }

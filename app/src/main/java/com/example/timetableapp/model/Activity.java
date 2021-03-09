@@ -2,7 +2,9 @@ package com.example.timetableapp.model;
 
 import android.util.Log;
 
-public class Activity {
+import java.io.Serializable;
+
+public class Activity implements Serializable {
     private String name, description;
     private Time startTime, endTime;
     private int repeatingDay;
@@ -16,12 +18,13 @@ public class Activity {
         this.name = name;
         this.description = description;
     }
-    public Activity(String name, String description, Time startTime, Time endTime, Link activityLink){
+    public Activity(String name, String description, Time startTime, Time endTime, Link activityLink, int repeatingDay){
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
         this.activityLink = activityLink;
+        this.repeatingDay = repeatingDay;
     }
 
 

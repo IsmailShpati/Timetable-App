@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Timetable App</string>
+    <string name="addBtn">Add</string>
+    <string name="addActivityTitle">Add new activity</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="linkDisplay">Display text\nfor link</string>
+    <string name="link">Website link</string>
+    <string name="startTime">Starting time</string>
+    <string name="endTime">Finishing time</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>

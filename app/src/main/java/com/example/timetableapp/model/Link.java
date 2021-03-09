@@ -2,7 +2,9 @@ package com.example.timetableapp.model;
 
 import android.net.Uri;
 
-public class Link {
+import java.io.Serializable;
+
+public class Link implements Serializable {
     private final String displayText;
     private final String link;
 
