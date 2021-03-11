@@ -107,27 +107,21 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             });
             setAlarmBtn = itemView.findViewById(R.id.setAlarmBtn);
             setAlarmBtn.setOnClickListener(e->{
-                Toast.makeText(itemView.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
                 Activity a = activities.get(getAdapterPosition());
-                AlarmManager alarmManager =
-                        (AlarmManager)itemView.getContext().getSystemService(Context.ALARM_SERVICE);
-                Intent alarmIntent = new Intent(itemView.getContext(), AlarmBroadcastReceiver.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("hour", a.getStartTime().getHour());
-                bundle.putInt("minute", a.getStartTime().getMinute());
-                alarmIntent.putExtras(bundle);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(itemView.getContext(),
-                        (int)System.currentTimeMillis(), alarmIntent, PendingIntent.FLAG_ONE_SHOT);
-                alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 100,
-                        pendingIntent);
+                Intent alarmIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
+                alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, a.getStartTime().getHour());
+                alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, a.getStartTime().getMinute());
+                alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, a.getName());
+                alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+                itemView.getContext().startActivity(alarmIntent);
             });
-            initClickListener();
+            initLinkListener();
         }
         public void setUri(String link){
             this.link = link;
         }
 
-        private void initClickListener(){
+        private void initLinkListener(){
             linkView.setOnClickListener(view -> {
                     try{
                         Intent openWebsite = new Intent(Intent.ACTION_VIEW);
