@@ -31,25 +31,25 @@ public class Timetable {
     }
 
     public Day getDay(int day){
-        return days.get(day-1);
+        return days.get(day);
     }
 
     //Handle updates on timetable
     public void addActivity(Activity activity){
         int day = activity.getRepeatingDay();
-        days.get(day-1).addActivity(activity);
+        days.get(day).addActivity(activity);
         dataManager.insert(activity);
     }
 
     public void removeActivity(Activity activity) {
         int day = activity.getRepeatingDay();
-        days.get(day-1).getActivities().remove(activity);
+        days.get(day).getActivities().remove(activity);
         dataManager.delete(activity);
     }
 
     public void updateActivity(Activity oldActivity, Activity newActivity){
         int day = oldActivity.getRepeatingDay();
-        days.set(day-1, dataManager.selectDay(day));
+        days.set(day, dataManager.selectDay(day));
         dataManager.update(oldActivity, newActivity);
     }
 }

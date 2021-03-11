@@ -113,6 +113,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                 alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, a.getStartTime().getMinute());
                 alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, a.getName());
                 alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+                alarmIntent.putExtra(AlarmClock.EXTRA_DAYS, a.getRepeatingDay());
                 itemView.getContext().startActivity(alarmIntent);
             });
             initLinkListener();

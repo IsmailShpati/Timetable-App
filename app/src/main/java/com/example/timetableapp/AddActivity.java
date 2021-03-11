@@ -19,14 +19,17 @@ public class AddActivity extends AppCompatActivity {
             linkDisplayET;
     private TimePicker startTP, endTP;
     private Button saveBtn, cancelBtn;
+    private int day;
 
     public AddActivity(){
         mainActivity = MainActivity.getInstance();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_activity_dialog);
+        day = getIntent().getIntExtra("day", 0);
         saveBtn = findViewById(R.id.saveBtn);
         cancelBtn = findViewById(R.id.cancleBtn);
         initViews();
@@ -60,7 +63,7 @@ public class AddActivity extends AppCompatActivity {
                 linkET.getText().toString()));
         activity.setStartTime(startTP.getHour(), startTP.getMinute());
         activity.setEndTime(endTP.getHour(), endTP.getMinute());
-        activity.setRepeatingDay(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+        activity.setRepeatingDay(day);
         return activity;
     }
 }

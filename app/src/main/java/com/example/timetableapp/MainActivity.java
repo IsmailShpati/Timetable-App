@@ -23,8 +23,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +47,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private TextView title;
+    private Spinner titleSpinner;
     private Button addBtn;
     private static MainActivity mainActivity;
     private DataManager dataManager;
@@ -56,14 +59,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainActivity = this;
-
-
-       // newAlarm.putExtra("scheduledAlarms", activities);
-
         initFields();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             DayOfWeek day = LocalDate.now().getDayOfWeek();
-            title.setText(day.name());
+            titleSpinner.setSelection(day.getValue());
         }
 
         timetable = new Timetable(new DataManager(this));
@@ -71,47 +70,51 @@ public class MainActivity extends AppCompatActivity {
                 .getActivities());
         recyclerView.setAdapter(activityAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        initSpinner();
         addBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
+                addIntent.putExtra("day", titleSpinner.getSelectedItemPosition());
                 startActivity(addIntent);
             }
         });
-//        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-//        ArrayList<Activity> activities = timetable.getDay(2).getActivities();
-//        Log.e("Main", "Size: " + activities.size());
-//        for(int  i = 0 ; i < 10; i++){
-//            Bundle bundle = new Bundle();
-//            final int id = (int)System.currentTimeMillis();
-//            bundle.putInt("hour", i + 1);
-//            bundle.putInt("minute", i+1);
-////            bundle.putString("name", activities.get(i).getName());
-////            bundle.putInt("day", activities.get(i).getRepeatingDay());
-//            Log.e("Main", "Activity " + i);
-//            Intent newAlarm = new Intent(this, AlarmBroadcastReceiver.class);
-//            newAlarm.putExtras(bundle);
-//            PendingIntent pendingAlarm = PendingIntent.getBroadcast(this, id, newAlarm, PendingIntent.FLAG_ONE_SHOT);
-//            alarmManager.set(AlarmManager.ELAPSED_REALTIME,
-//                    SystemClock.elapsedRealtime()+10000 , pendingAlarm);
-//        }
-//        Toast.makeText(this, "Wait 2 seconds", Toast.LENGTH_SHORT).show();
-        }
+    }
 
-        public DataManager getDataManager(){
-            return dataManager;
-        }
+    public DataManager getDataManager(){
+        return dataManager;
+    }
+
+    private void initSpinner(){
+        titleSpinner = findViewById(R.id.spinnerTitle);
+        ArrayAdapter<CharSequence> spinnerAdapter =
+                ArrayAdapter.createFromResource(this, R.array.days,
+                        android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        titleSpinner.setAdapter(spinnerAdapter);
+         titleSpinner.setSelection(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+        titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                activityAdapter.update(timetable.getDay(i).getActivities());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+    }
 
     private void initFields(){
         recyclerView = findViewById(R.id.recyclerView);
         addBtn = findViewById(R.id.addButton);
-        title = findViewById(R.id.textView);
+        titleSpinner = findViewById(R.id.spinnerTitle);
     }
 
     public void addActivity(Activity activity){
-        Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show();
         timetable.addActivity(activity);
-        activityAdapter.update(timetable.getCurrentDay().getActivities());
+        activityAdapter.update(
+                timetable.getDay(titleSpinner.getSelectedItemPosition()).getActivities());
     }
 
     public static MainActivity getInstance(){
