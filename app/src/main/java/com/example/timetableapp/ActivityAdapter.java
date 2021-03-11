@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.AlarmClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +22,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timetableapp.model.Activity;
+import com.example.timetableapp.model.Time;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ActivityHolder> {
 
     private ArrayList<Activity> activities;
-
     public ActivityAdapter(ArrayList<Activity> activities){
         this.activities = activities;
     }
 
-    public void update(ArrayList<Activity> newActivities){
+    public void update(ArrayList<Activity> newActivities, int currentDay){
         this.activities = newActivities;
         notifyDataSetChanged();
     }
@@ -90,40 +92,75 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             nameView = itemView.findViewById(R.id.nameView);
             descriptionView = itemView.findViewById(R.id.descriptionView);
             timeView = itemView.findViewById(R.id.timeView);
+
             linkView = itemView.findViewById(R.id.linkView);
             linkView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+            linkView.setOnClickListener(getLinkClickListener());
+
             editView = itemView.findViewById(R.id.editImage);
-            editView.setOnClickListener(e -> {
-                Toast.makeText(itemView.getContext(), "Editing", Toast.LENGTH_SHORT).show();
-                Intent editIntent = new Intent(itemView.getContext(), EditActivity.class);
-                editIntent.putExtra("oldActivity", activities.get(getAdapterPosition()));
-                itemView.getContext().startActivity(editIntent);
-            });
+            editView.setOnClickListener(getEditClickListener());
+
             deleteView = itemView.findViewById(R.id.deleteImage);
-            deleteView.setOnClickListener(e->{
-                Toast.makeText(itemView.getContext(), "Delete", Toast.LENGTH_SHORT).show();
-                MainActivity.getInstance().delete(activities.get(getAdapterPosition()));
-                notifyDataSetChanged();
-            });
+            deleteView.setOnClickListener(getDeleteClickListener());
+
             setAlarmBtn = itemView.findViewById(R.id.setAlarmBtn);
-            setAlarmBtn.setOnClickListener(e->{
-                Activity a = activities.get(getAdapterPosition());
-                Intent alarmIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
-                alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, a.getStartTime().getHour());
-                alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, a.getStartTime().getMinute());
-                alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, a.getName());
-                alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-                alarmIntent.putExtra(AlarmClock.EXTRA_DAYS, a.getRepeatingDay());
-                itemView.getContext().startActivity(alarmIntent);
-            });
-            initLinkListener();
+            setAlarmBtn.setOnClickListener(getAlarmClickListener());
+
         }
         public void setUri(String link){
             this.link = link;
         }
 
-        private void initLinkListener(){
-            linkView.setOnClickListener(view -> {
+        private View.OnClickListener getEditClickListener(){
+            return e->{
+                Intent editIntent = new Intent(itemView.getContext(), EditActivity.class);
+                editIntent.putExtra("oldActivity", activities.get(getAdapterPosition()));
+                itemView.getContext().startActivity(editIntent);
+            };
+        }
+
+        private View.OnClickListener getDeleteClickListener(){
+            return e->{
+                MainActivity.getInstance().delete(activities.get(getAdapterPosition()));
+                notifyDataSetChanged();
+            };
+        }
+
+        private View.OnClickListener getAlarmClickListener(){
+            return view -> {
+                Activity activity = activities.get(getAdapterPosition());
+                int hoursUntil = Time.getHoursUntil(activity, Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1);
+                Log.e("AlarmAt", "Hours until: " + hoursUntil);
+                if(hoursUntil < 0) {
+                    Intent alarmIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
+                    alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, activity.getStartTime().getHour());
+                    alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, activity.getStartTime().getMinute());
+                    alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, activity.getName());
+                    alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+                    itemView.getContext().startActivity(alarmIntent);
+                }
+                else{
+                    AlarmManager alarmManager =
+                            (AlarmManager)itemView.getContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent alarmIntent = new Intent(itemView.getContext(), AlarmBroadcastReceiver.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", activity.getName());
+                    bundle.putInt("hour", activity.getStartTime().getHour());
+                    bundle.putInt("minute", activity.getStartTime().getMinute());
+                    alarmIntent.putExtras(bundle);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(itemView.getContext(),
+                            0, alarmIntent, 0);
+                    alarmManager.set(AlarmManager.ELAPSED_REALTIME,
+                            SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR * hoursUntil,
+                            pendingIntent);
+                    Toast.makeText(itemView.getContext(), "The alarm will be set approx at " +
+                            "0-1 Am on the specified day, after " + hoursUntil + "hours", Toast.LENGTH_SHORT).show();
+                }
+            };
+        }
+
+        private View.OnClickListener getLinkClickListener(){
+            return view -> {
                     try{
                         Intent openWebsite = new Intent(Intent.ACTION_VIEW);
                         openWebsite.setData(Uri.parse(link));
@@ -131,7 +168,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                     }catch(Exception e){
                         Toast.makeText(view.getContext(), "Invalid link",Toast.LENGTH_SHORT).show();
                     }
-            });
+            };
         }
     }
 }

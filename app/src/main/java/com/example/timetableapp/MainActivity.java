@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                activityAdapter.update(timetable.getDay(i).getActivities());
+                activityAdapter.update(timetable.getDay(i).getActivities(), i);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -106,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
     public void addActivity(Activity activity){
         timetable.addActivity(activity);
         activityAdapter.update(
-                timetable.getDay(titleSpinner.getSelectedItemPosition()).getActivities());
+                timetable.getDay(titleSpinner.getSelectedItemPosition()).getActivities(),
+                titleSpinner.getSelectedItemPosition());
     }
 
     public static MainActivity getInstance(){

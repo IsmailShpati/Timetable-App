@@ -14,7 +14,7 @@ import com.example.timetableapp.model.Link;
 import java.util.Calendar;
 
 public class AddActivity extends AppCompatActivity {
-    private MainActivity mainActivity;
+    private final MainActivity mainActivity;
     private EditText nameET, descriptionET, linkET,
             linkDisplayET;
     private TimePicker startTP, endTP;

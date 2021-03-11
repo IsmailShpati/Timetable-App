@@ -88,4 +88,5 @@ public class Activity implements Serializable {
         Log.d("Activity Time String", startTime.toString() + " - " + endTime.toString());
         return (startTime.toString() + " - " + endTime.toString());
     }
+
 }
