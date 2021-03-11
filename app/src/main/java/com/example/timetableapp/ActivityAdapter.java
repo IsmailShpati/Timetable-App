@@ -131,7 +131,6 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                     }catch(Exception e){
                         Toast.makeText(view.getContext(), "Invalid link",Toast.LENGTH_SHORT).show();
                     }
-
             });
         }
     }

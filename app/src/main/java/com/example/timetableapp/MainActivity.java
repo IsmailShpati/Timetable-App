@@ -60,24 +60,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mainActivity = this;
         initFields();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            DayOfWeek day = LocalDate.now().getDayOfWeek();
-            titleSpinner.setSelection(day.getValue());
-        }
-
         timetable = new Timetable(new DataManager(this));
-        activityAdapter = new ActivityAdapter(timetable.getDay(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+        activityAdapter = new ActivityAdapter(timetable.getDay(titleSpinner.getSelectedItemPosition())
                 .getActivities());
         recyclerView.setAdapter(activityAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        initSpinner();
-        addBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
+
+        addBtn.setOnClickListener(onClick->{
                 Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
                 addIntent.putExtra("day", titleSpinner.getSelectedItemPosition());
                 startActivity(addIntent);
-            }
         });
     }
 
@@ -87,18 +79,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initSpinner(){
         titleSpinner = findViewById(R.id.spinnerTitle);
+
         ArrayAdapter<CharSequence> spinnerAdapter =
                 ArrayAdapter.createFromResource(this, R.array.days,
                         android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         titleSpinner.setAdapter(spinnerAdapter);
-         titleSpinner.setSelection(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+        titleSpinner.setSelection(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1);
         titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 activityAdapter.update(timetable.getDay(i).getActivities());
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -108,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private void initFields(){
         recyclerView = findViewById(R.id.recyclerView);
         addBtn = findViewById(R.id.addButton);
-        titleSpinner = findViewById(R.id.spinnerTitle);
+        initSpinner();
     }
 
     public void addActivity(Activity activity){

@@ -32,7 +32,8 @@ public class DataController {
 
         while (savedData.moveToNext()) {
             int day = savedData.getInt(dayIndex);
-            savedDays.get(day-1)
+            Log.e("DataController", "Day " + day);
+            savedDays.get(day)
                     .addActivity(
                     new Activity(
                             savedData.getString(nameIndex),
