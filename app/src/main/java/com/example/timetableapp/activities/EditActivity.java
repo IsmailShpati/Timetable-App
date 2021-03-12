@@ -1,6 +1,7 @@
 package com.example.timetableapp.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -14,9 +15,8 @@ import com.example.timetableapp.model.Link;
 
 public class EditActivity extends AppCompatActivity {
     private EditText nameET, descriptionET, linkET,
-            linkDisplayET;
+            linkDisplayET, minutesBeforeET;
     private TimePicker startTP, endTP;
-    private Button saveBtn, cancelBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,6 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void initFields(){
-       // Bundle bundle = getIntent().getExtras();
         final Activity oldActivity = (Activity)getIntent().getSerializableExtra("oldActivity");
 
         nameET = findViewById(R.id.editTextName);
@@ -49,14 +48,17 @@ public class EditActivity extends AppCompatActivity {
         endTP.setHour(oldActivity.getEndTime().getHour());
         endTP.setMinute(oldActivity.getEndTime().getMinute());
 
-        saveBtn = findViewById(R.id.saveBtn);
+        minutesBeforeET = findViewById(R.id.editTextMinutesBefore);
+        String minutesBeforeText = "" + oldActivity.getMinutesBeforeAlarm();
+        minutesBeforeET.setText(minutesBeforeText);
+
+        Button saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(e-> {
             MainActivity.getInstance().update(oldActivity, getNewActivity(oldActivity.getRepeatingDay()));
             finish();
         });
 
-
-        cancelBtn = findViewById(R.id.cancleBtn);
+        Button cancelBtn = findViewById(R.id.cancleBtn);
         cancelBtn.setOnClickListener(e-> finish());
     }
 
@@ -64,22 +66,20 @@ public class EditActivity extends AppCompatActivity {
         Activity activity = new Activity();
         activity.setName(nameET.getText().toString());
         activity.setDescription(descriptionET.getText().toString());
-        activity.setActivityLink(new Link(linkDisplayET.getText().toString(),
-                linkET.getText().toString()));
+        if(linkDisplayET.getText().length() < 1)
+            activity.setActivityLink(new Link(linkET.getText().toString(),
+                    linkET.getText().toString()));
+        else
+            activity.setActivityLink(new Link(linkDisplayET.getText().toString(),
+                    linkET.getText().toString()));
         activity.setStartTime(startTP.getHour(), startTP.getMinute());
         activity.setEndTime(endTP.getHour(), endTP.getMinute());
         activity.setRepeatingDay(repeatingDay);
-        return activity;
-    }
-
-    private Activity getOldActivity(Bundle bundle){
-        Activity activity = new Activity();
-        activity.setName(bundle.getString("name"));
-        activity.setDescription(bundle.getString("description"));
-        activity.setActivityLink(new Link(bundle.getString("displayLink"), bundle.getString("link")));
-        activity.setStartTime(bundle.getInt("startHour"), bundle.getInt("startMinute"));
-        activity.setEndTime(bundle.getInt("endHour"), bundle.getInt("endMinute"));
-        activity.setRepeatingDay(bundle.getInt("day"));
+        try {
+            activity.setMinutesBeforeAlarm(Integer.parseInt(minutesBeforeET.getText().toString()));
+        }catch(NumberFormatException e){
+            Log.e("EditActivity", "Minutes before empty" );
+        }
         return activity;
     }
 }

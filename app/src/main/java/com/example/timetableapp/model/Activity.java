@@ -7,24 +7,27 @@ import java.io.Serializable;
 public class Activity implements Serializable {
     private String name, description;
     private Time startTime, endTime;
-    private int repeatingDay;
+    private int repeatingDay, minutesBeforeAlarm;
 
     //To put a meeting link
     private Link activityLink;
     public Activity(){
+        minutesBeforeAlarm = 10;
     }
 
     private Activity(String name, String description){
         this.name = name;
         this.description = description;
     }
-    public Activity(String name, String description, Time startTime, Time endTime, Link activityLink, int repeatingDay){
+    public Activity(String name, String description, Time startTime, Time endTime,
+                    Link activityLink, int repeatingDay, int minutesBeforeAlarm){
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
         this.activityLink = activityLink;
         this.repeatingDay = repeatingDay;
+        this.minutesBeforeAlarm = minutesBeforeAlarm;
     }
 
 
@@ -79,6 +82,10 @@ public class Activity implements Serializable {
     public void setActivityLink(Link activityLink){
         this.activityLink = activityLink;
     }
+
+    public int getMinutesBeforeAlarm() { return minutesBeforeAlarm; }
+
+    public void setMinutesBeforeAlarm(int minutesBeforeAlarm) { this.minutesBeforeAlarm = minutesBeforeAlarm; }
 
     public Link getActivityLink(){
         return activityLink;

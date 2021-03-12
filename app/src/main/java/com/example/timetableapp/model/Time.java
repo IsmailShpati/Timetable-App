@@ -53,6 +53,18 @@ public class Time implements Serializable {
         return a.getRepeatingDay()*1440 + a.getStartTime().getHour() * 60 + a.getStartTime().getMinute();
     }
 
+    private static int getTimeInMinutes(Time time){
+        return time.getHour()*60 + time.getMinute();
+    }
+
+    //If you want the alert to be set and run some minutes before the activity starts
+    public static Time calculateTimeBeforeAlert(Time setTime, int minutesBefore){
+        int timeInMinutes = getTimeInMinutes(setTime) - minutesBefore;
+        if(timeInMinutes >= 0)
+            return new Time(timeInMinutes/60, timeInMinutes - (timeInMinutes/60*60));
+        return setTime;
+    }
+
     @Override
     public String toString(){
         return (zeroPadding(hour) + ":" + zeroPadding(minute));

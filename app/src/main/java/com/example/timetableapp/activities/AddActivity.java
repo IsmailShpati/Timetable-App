@@ -1,6 +1,7 @@
 package com.example.timetableapp.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +16,7 @@ import com.example.timetableapp.model.Link;
 public class AddActivity extends AppCompatActivity {
     private final MainActivity mainActivity;
     private EditText nameET, descriptionET, linkET,
-            linkDisplayET;
+            linkDisplayET, minutesBeforeET;
     private TimePicker startTP, endTP;
     private Button saveBtn, cancelBtn;
     private int day;
@@ -42,6 +43,7 @@ public class AddActivity extends AppCompatActivity {
         linkDisplayET = findViewById(R.id.editTextLinkDisplay);
         startTP = findViewById(R.id.timePickerStart);
         endTP = findViewById(R.id.timePickerEnd);
+        minutesBeforeET = findViewById(R.id.editTextMinutesBefore);
     }
 
 
@@ -58,11 +60,20 @@ public class AddActivity extends AppCompatActivity {
         Activity activity = new Activity();
         activity.setName(nameET.getText().toString());
         activity.setDescription(descriptionET.getText().toString());
-        activity.setActivityLink(new Link(linkDisplayET.getText().toString(),
+        if(linkDisplayET.getText().length() < 1)
+            activity.setActivityLink(new Link(linkET.getText().toString(),
                 linkET.getText().toString()));
+        else
+            activity.setActivityLink(new Link(linkDisplayET.getText().toString(),
+                    linkET.getText().toString()));
         activity.setStartTime(startTP.getHour(), startTP.getMinute());
         activity.setEndTime(endTP.getHour(), endTP.getMinute());
         activity.setRepeatingDay(day);
+        try {
+            activity.setMinutesBeforeAlarm(Integer.parseInt(minutesBeforeET.getText().toString()));
+        }catch(NumberFormatException e){
+            Log.e("[AddActivity]", "Minutes Empty");
+        }
         return activity;
     }
 }

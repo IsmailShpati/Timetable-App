@@ -10,6 +10,7 @@
     <string name="endTime">Finishing time</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="minuteBefore">Minutes Before</string>
     <string-array name="days">
        <item>Sunday</item>
        <item>Monday</item>

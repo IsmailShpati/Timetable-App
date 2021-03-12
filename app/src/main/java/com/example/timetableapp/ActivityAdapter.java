@@ -78,12 +78,14 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
         holder.descriptionView.setText(selectedActivity.getDescription());
         holder.timeView.setText(selectedActivity.getTimeString());
         holder.linkView.setText(selectedActivity.getActivityLink().getDisplayText());
+        String minutesBeforeText = "Minutes before the alarm " + selectedActivity.getMinutesBeforeAlarm();
+        holder.minutesBeforeView.setText(minutesBeforeText);
         holder.setUri(selectedActivity.getActivityLink().getLink());
     }
 
     public class ActivityHolder extends RecyclerView.ViewHolder{
 
-        TextView nameView, descriptionView, timeView, linkView;
+        TextView nameView, descriptionView, timeView, linkView, minutesBeforeView;
         ImageView editView, deleteView;
         Button setAlarmBtn;
         private String link;
@@ -96,6 +98,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
             nameView = itemView.findViewById(R.id.nameView);
             descriptionView = itemView.findViewById(R.id.descriptionView);
             timeView = itemView.findViewById(R.id.timeView);
+            minutesBeforeView = itemView.findViewById(R.id.minutesBeforeView);
 
             linkView = itemView.findViewById(R.id.linkView);
             linkView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -143,10 +146,12 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                 Activity activity = activities.get(getAdapterPosition());
                 int hoursUntil = Time.getHoursUntil(activity, Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1);
                 Log.e("AlarmAt", "Hours until: " + hoursUntil);
+                Time alarmTime = Time.calculateTimeBeforeAlert(activity.getStartTime(), activity.getMinutesBeforeAlarm());
                 if(hoursUntil < 0) {
                     Intent alarmIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
-                    alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, activity.getStartTime().getHour());
-                    alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, activity.getStartTime().getMinute());
+
+                    alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, alarmTime.getHour());
+                    alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, alarmTime.getMinute());
                     alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, activity.getName());
                     alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
                     itemView.getContext().startActivity(alarmIntent);
@@ -157,8 +162,8 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                     Intent alarmIntent = new Intent(itemView.getContext(), AlarmBroadcastReceiver.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("name", activity.getName());
-                    bundle.putInt("hour", activity.getStartTime().getHour());
-                    bundle.putInt("minute", activity.getStartTime().getMinute());
+                    bundle.putInt("hour", alarmTime.getHour());
+                    bundle.putInt("minute", alarmTime.getMinute());
                     alarmIntent.putExtras(bundle);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(itemView.getContext(),
                             0, alarmIntent, 0);

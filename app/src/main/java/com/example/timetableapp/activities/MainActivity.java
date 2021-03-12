@@ -22,9 +22,7 @@ import com.example.timetableapp.model.Timetable;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
     private Spinner titleSpinner;
-    private Button addBtn;
     private static MainActivity mainActivity;
     private DataManager dataManager;
     private Timetable timetable;
@@ -46,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFields(){
-        recyclerView = findViewById(R.id.recyclerView);
-        addBtn = findViewById(R.id.addButton);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        Button addBtn = findViewById(R.id.addButton);
         addBtn.setOnClickListener(onClick->{
             Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
             addIntent.putExtra("day", titleSpinner.getSelectedItemPosition());

@@ -25,6 +25,7 @@ public class DataManager {
     public final static String TABLE_ROW_DESCRIPTION = "description";
     public final static String TABLE_ROW_LINK_DISPLAY = "link_display";
     public final static String TABLE_ROW_LINK = "link";
+    public final static String TABLE_ROW_MINUTES_BEFORE = "minutes_before";
     public final static String TABLE_ROW_START_HOUR = "start_hour";
     public final static String TABLE_ROW_START_MINUTE = "start_minute";
     public final static String TABLE_ROW_END_HOUR = "end_hour";
@@ -47,7 +48,8 @@ public class DataManager {
                 ", " + TABLE_ROW_START_HOUR +
                 ", " + TABLE_ROW_START_MINUTE +
                 ", " + TABLE_ROW_END_HOUR +
-                ", " + TABLE_ROW_END_MINUTE
+                ", " + TABLE_ROW_END_MINUTE +
+                ", " + TABLE_ROW_MINUTES_BEFORE
                 +") VALUES " +
                 "('"   + activity.getName() +
                 "', '" + activity.getDescription() +
@@ -58,6 +60,7 @@ public class DataManager {
                 ", " + activity.getStartTime().getMinute() +
                 ", " + activity.getEndTime().getHour() +
                 ", " + activity.getEndTime().getMinute() +
+                ", " + activity.getMinutesBeforeAlarm() +
                 ");";
         Log.e("insert()", insertQuery);
         database.execSQL(insertQuery);
@@ -95,6 +98,7 @@ public class DataManager {
                 TABLE_ROW_START_HOUR + " = " + newActivity.getStartTime().getHour() + ", " +
                 TABLE_ROW_START_MINUTE + " = " + newActivity.getStartTime().getMinute() + ", " +
                 TABLE_ROW_END_HOUR + " = " + newActivity.getEndTime().getHour() + ", " +
+                TABLE_ROW_MINUTES_BEFORE + " = " + newActivity.getMinutesBeforeAlarm() + ", " +
                 TABLE_ROW_END_MINUTE + " = " + newActivity.getEndTime().getMinute() +
                 " WHERE " +
                 TABLE_ROW_DAY + " = " + oldActivity.getRepeatingDay() + " AND " +
@@ -129,7 +133,8 @@ public class DataManager {
                         TABLE_ROW_START_HOUR + " integer, " +
                         TABLE_ROW_START_MINUTE + " integer, " +
                         TABLE_ROW_END_HOUR + " integer, " +
-                        TABLE_ROW_END_MINUTE + " integer " +
+                        TABLE_ROW_END_MINUTE + " integer, " +
+                        TABLE_ROW_MINUTES_BEFORE + " integer " +
                         ");";
                database.execSQL(newTableQuery);
         }

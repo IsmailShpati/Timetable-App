@@ -27,6 +27,7 @@ public class DataParser {
         final int startMinuteIndex = savedData.getColumnIndex(DataManager.TABLE_ROW_START_MINUTE);
         final int endHourIndex = savedData.getColumnIndex(DataManager.TABLE_ROW_END_HOUR);
         final int endMinuteIndex = savedData.getColumnIndex(DataManager.TABLE_ROW_END_MINUTE);
+        final int minutesBeforeIndex = savedData.getColumnIndex(DataManager.TABLE_ROW_MINUTES_BEFORE);
 
         while (savedData.moveToNext()) {
             int day = savedData.getInt(dayIndex);
@@ -39,7 +40,8 @@ public class DataParser {
                             new Time(savedData.getInt(startHourIndex), savedData.getInt(startMinuteIndex)),
                             new Time(savedData.getInt(endHourIndex), savedData.getInt(endMinuteIndex)),
                             new Link(savedData.getString(linkDisplayIndex), savedData.getString(linkIndex)),
-                            day));
+                            day,
+                            savedData.getInt(minutesBeforeIndex)));
         }
 
         savedData.close();
@@ -56,6 +58,7 @@ public class DataParser {
         final int startMinuteIndex = savedData.getColumnIndex(DataManager.TABLE_ROW_START_MINUTE);
         final int endHourIndex = savedData.getColumnIndex(DataManager.TABLE_ROW_END_HOUR);
         final int endMinuteIndex = savedData.getColumnIndex(DataManager.TABLE_ROW_END_MINUTE);
+        final int minutesBeforeIndex = savedData.getColumnIndex(DataManager.TABLE_ROW_MINUTES_BEFORE);
 
         Day day = new Day();
         while (savedData.moveToNext()) {
@@ -66,7 +69,9 @@ public class DataParser {
                                     new Time(savedData.getInt(startHourIndex), savedData.getInt(startMinuteIndex)),
                                     new Time(savedData.getInt(endHourIndex), savedData.getInt(endMinuteIndex)),
                                     new Link(savedData.getString(linkDisplayIndex), savedData.getString(linkIndex)),
-                                    savedData.getInt(dayIndex)));
+                                    savedData.getInt(dayIndex),
+                                    savedData.getInt(minutesBeforeIndex)
+                            ));
         }
 
         savedData.close();
