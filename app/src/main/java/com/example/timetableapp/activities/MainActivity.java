@@ -1,49 +1,25 @@
-package com.example.timetableapp;
+package com.example.timetableapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.AlarmClock;
-import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.timetableapp.ActivityAdapter;
+import com.example.timetableapp.R;
+import com.example.timetableapp.database.DataManager;
 import com.example.timetableapp.model.Activity;
-import com.example.timetableapp.model.Link;
-import com.example.timetableapp.model.Time;
 import com.example.timetableapp.model.Timetable;
 
-import org.w3c.dom.Text;
-
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.TextStyle;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -60,21 +36,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mainActivity = this;
         initFields();
+    }
+
+    public static MainActivity getInstance(){
+        return mainActivity;
+    }
+    public DataManager getDataManager(){
+        return dataManager;
+    }
+
+    private void initFields(){
+        recyclerView = findViewById(R.id.recyclerView);
+        addBtn = findViewById(R.id.addButton);
+        addBtn.setOnClickListener(onClick->{
+            Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
+            addIntent.putExtra("day", titleSpinner.getSelectedItemPosition());
+            startActivity(addIntent);
+        });
+
+        initSpinner();
         timetable = new Timetable(new DataManager(this));
         activityAdapter = new ActivityAdapter(timetable.getDay(titleSpinner.getSelectedItemPosition())
                 .getActivities());
         recyclerView.setAdapter(activityAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        addBtn.setOnClickListener(onClick->{
-                Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
-                addIntent.putExtra("day", titleSpinner.getSelectedItemPosition());
-                startActivity(addIntent);
-        });
-    }
-
-    public DataManager getDataManager(){
-        return dataManager;
     }
 
     private void initSpinner(){
@@ -97,21 +82,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initFields(){
-        recyclerView = findViewById(R.id.recyclerView);
-        addBtn = findViewById(R.id.addButton);
-        initSpinner();
-    }
-
     public void addActivity(Activity activity){
         timetable.addActivity(activity);
         activityAdapter.update(
                 timetable.getDay(titleSpinner.getSelectedItemPosition()).getActivities(),
                 titleSpinner.getSelectedItemPosition());
-    }
-
-    public static MainActivity getInstance(){
-        return mainActivity;
     }
 
     public void delete(Activity activity) {

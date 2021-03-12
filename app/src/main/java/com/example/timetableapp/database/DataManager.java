@@ -1,7 +1,6 @@
-package com.example.timetableapp;
+package com.example.timetableapp.database;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -65,12 +64,12 @@ public class DataManager {
     }
 
     public ArrayList<Day> selectAll(){
-        return DataController.getDaysData(database.rawQuery("SELECT * FROM " + TABLE_ACTIVITIES, null));
+        return DataParser.getDaysData(database.rawQuery("SELECT * FROM " + TABLE_ACTIVITIES, null));
     }
 
     public Day selectDay(int day){
         String selectQuery = "SELECT * FROM " + TABLE_ACTIVITIES + " WHERE " + TABLE_ROW_DAY + "=" + day;
-        return DataController.getDayData(database.rawQuery(selectQuery, null));
+        return DataParser.getDayData(database.rawQuery(selectQuery, null));
     }
 
     public void deleteAll(){

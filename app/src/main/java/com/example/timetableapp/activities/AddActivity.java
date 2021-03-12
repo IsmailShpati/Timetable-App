@@ -1,4 +1,4 @@
-package com.example.timetableapp;
+package com.example.timetableapp.activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,10 +8,9 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.timetableapp.R;
 import com.example.timetableapp.model.Activity;
 import com.example.timetableapp.model.Link;
-
-import java.util.Calendar;
 
 public class AddActivity extends AppCompatActivity {
     private final MainActivity mainActivity;

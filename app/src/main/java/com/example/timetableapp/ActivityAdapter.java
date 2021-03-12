@@ -1,8 +1,10 @@
 package com.example.timetableapp;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -21,6 +23,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timetableapp.activities.EditActivity;
+import com.example.timetableapp.activities.MainActivity;
 import com.example.timetableapp.model.Activity;
 import com.example.timetableapp.model.Time;
 
@@ -121,8 +125,16 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
 
         private View.OnClickListener getDeleteClickListener(){
             return e->{
-                MainActivity.getInstance().delete(activities.get(getAdapterPosition()));
-                notifyDataSetChanged();
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(itemView.getContext());
+                alertBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                    MainActivity.getInstance().delete(activities.get(getAdapterPosition()));
+                    notifyDataSetChanged();
+                    dialogInterface.dismiss();
+                });
+                alertBuilder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
+                alertBuilder.setMessage("Are you sure you want to delete this activity?");
+                AlertDialog alertDialog = alertBuilder.create();
+                alertBuilder.show();
             };
         }
 
@@ -154,7 +166,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
                             SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR * hoursUntil,
                             pendingIntent);
                     Toast.makeText(itemView.getContext(), "The alarm will be set approx at " +
-                            "0-1 Am on the specified day, after " + hoursUntil + "hours", Toast.LENGTH_SHORT).show();
+                            "0-1 Am on the specified day, after " + hoursUntil + " hours", Toast.LENGTH_SHORT).show();
                 }
             };
         }

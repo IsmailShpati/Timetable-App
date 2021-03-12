@@ -1,4 +1,4 @@
-package com.example.timetableapp;
+package com.example.timetableapp.activities;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -7,10 +7,9 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.timetableapp.R;
 import com.example.timetableapp.model.Activity;
 import com.example.timetableapp.model.Link;
-
-import java.util.Calendar;
 
 
 public class EditActivity extends AppCompatActivity {
@@ -58,9 +57,7 @@ public class EditActivity extends AppCompatActivity {
 
 
         cancelBtn = findViewById(R.id.cancleBtn);
-        cancelBtn.setOnClickListener(e->{
-            finish();
-        });
+        cancelBtn.setOnClickListener(e-> finish());
     }
 
     private Activity getNewActivity(int repeatingDay){

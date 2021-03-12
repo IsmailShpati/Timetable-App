@@ -3,25 +3,24 @@
     package="com.example.timetableapp">
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddActivity"
+            android:name=".activities.AddActivity"
             android:label="@string/addActivityTitle">
         </activity>
         <receiver android:name=".AlarmBroadcastReceiver"/>
         <activity
-            android:name=".EditActivity"
+            android:name=".activities.EditActivity"
             android:label="Edit Activity">
         </activity>
     </application>

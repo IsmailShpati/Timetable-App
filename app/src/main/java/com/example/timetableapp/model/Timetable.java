@@ -1,23 +1,14 @@
 package com.example.timetableapp.model;
 
 import android.util.Log;
-import com.example.timetableapp.DataManager;
+import com.example.timetableapp.database.DataManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Timetable {
-    private ArrayList<Day> days = new ArrayList<>();
+    private ArrayList<Day> days;
     private final DataManager dataManager;
-
-//    public Timetable(ArrayList<Day> days){
-//        this.days = days;
-//        for(Day d : days){
-//            for(Activity a : d.getActivities()){
-//                Log.e("Inside Timetable()", "Name=["+a.getName()+"] Day=["+a.getRepeatingDay());
-//            }
-//        }
-//    }
 
     public Timetable(DataManager dataManager){
         this.dataManager = dataManager;

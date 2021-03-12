@@ -1,7 +1,6 @@
-package com.example.timetableapp;
+package com.example.timetableapp.database;
 
 import android.database.Cursor;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.example.timetableapp.model.Activity;
@@ -9,10 +8,9 @@ import com.example.timetableapp.model.Day;
 import com.example.timetableapp.model.Link;
 import com.example.timetableapp.model.Time;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class DataController {
+public class DataParser {
 
 
 
@@ -45,12 +43,6 @@ public class DataController {
         }
 
         savedData.close();
-//        for(Day d : savedDays){
-//            if(d.getActivities() != null){
-//                for(Activity a : d.getActivities())
-//                    Log.e("info", "Name=["+a.getName()+"] "+ "Day=[" + a.getRepeatingDay());
-//            }
-//        }
         return savedDays;
     }
 

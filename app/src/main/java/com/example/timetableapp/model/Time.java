@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Time implements Serializable {
-    private int hour, minute;
+    private final int hour, minute;
 
     public Time(int hour, int minute){
         this.hour = hour;
@@ -21,15 +21,10 @@ public class Time implements Serializable {
     public int getMinute() {
         return minute;
     }
-    public void setHour(int hour){
-        this.hour = hour;
-    }
-    public void setMinute(int minute){
-        this.minute = minute;
-    }
 
     private static final int NORMAL_ALARM = 0, SAME_WEEK_ALARM = 1, NEXT_WEEK_ALARM = 2;
 
+    //Hours until the day the alarm is set comes in order to fire the PendingIntent and create an alarm on the Alarm Clock
     public static int getHoursUntil(Activity b, int day) {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         int type = getAlarmType(b, day);
@@ -46,8 +41,7 @@ public class Time implements Serializable {
                 ((day * 1440 +
                   now.get(Calendar.HOUR_OF_DAY)*60 +
                   now.get(Calendar.MINUTE) ));
-        Log.e("AlarmAt", "Next Activity: " + a.getRepeatingDay() + " Time: " + a.getStartTime().toString());
-        Log.e("AlarmAt", "Starting Activity: " + day + " Time " + now.get(Calendar.HOUR_OF_DAY) + ":"+now.get(Calendar.MINUTE));
+
         if(difference <= 0)
             return NEXT_WEEK_ALARM;
         if(difference > 1440)
