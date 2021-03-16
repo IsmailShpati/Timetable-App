@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -48,10 +49,13 @@ public class AddActivity extends AppCompatActivity {
 
 
     public void onCancel(View view) {
+
+        Log.e("onCancel()", "Clicked on cancel");
         finish();
     }
 
     public void onSave(View view) {
+        Log.e("onSave()", "Clicked on save");
         mainActivity.addActivity(getActivity());
         finish();
     }

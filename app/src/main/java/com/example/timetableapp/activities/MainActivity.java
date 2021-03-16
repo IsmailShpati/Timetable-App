@@ -19,7 +19,9 @@ import com.example.timetableapp.database.DataManager;
 import com.example.timetableapp.model.Activity;
 import com.example.timetableapp.model.Timetable;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     private Spinner titleSpinner;
@@ -47,15 +49,16 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         Button addBtn = findViewById(R.id.addButton);
         addBtn.setOnClickListener(onClick->{
-            Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
+            Intent addIntent = new Intent(this, AddActivity.class);
             addIntent.putExtra("day", titleSpinner.getSelectedItemPosition());
             startActivity(addIntent);
         });
 
         initSpinner();
         timetable = new Timetable(new DataManager(this));
-        activityAdapter = new ActivityAdapter(timetable.getDay(titleSpinner.getSelectedItemPosition())
-                .getActivities());
+        ArrayList<Activity> dailyActivities = timetable.getDay(titleSpinner.getSelectedItemPosition()).getActivities();
+        Collections.sort(dailyActivities);
+        activityAdapter = new ActivityAdapter(dailyActivities);
         recyclerView.setAdapter(activityAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

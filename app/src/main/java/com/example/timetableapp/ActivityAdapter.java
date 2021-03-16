@@ -30,6 +30,8 @@ import com.example.timetableapp.model.Time;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ActivityHolder> {
 
@@ -39,6 +41,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.Activi
     }
 
     public void update(ArrayList<Activity> newActivities, int currentDay){
+        Collections.sort(newActivities);
         this.activities = newActivities;
         notifyDataSetChanged();
     }

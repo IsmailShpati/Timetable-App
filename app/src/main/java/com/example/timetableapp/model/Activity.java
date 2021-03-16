@@ -4,7 +4,7 @@ import android.util.Log;
 
 import java.io.Serializable;
 
-public class Activity implements Serializable {
+public class Activity implements Serializable, Comparable<Activity> {
     private String name, description;
     private Time startTime, endTime;
     private int repeatingDay, minutesBeforeAlarm;
@@ -96,4 +96,8 @@ public class Activity implements Serializable {
         return (startTime.toString() + " - " + endTime.toString());
     }
 
+    @Override
+    public int compareTo(Activity activity) {
+        return Time.getTimeInMinutes(this) - Time.getTimeInMinutes(activity);
+    }
 }

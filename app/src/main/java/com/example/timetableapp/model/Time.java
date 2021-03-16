@@ -49,7 +49,7 @@ public class Time implements Serializable {
         return NORMAL_ALARM;
     }
 
-    private static int getTimeInMinutes(Activity a){
+    public static int getTimeInMinutes(Activity a){
         return a.getRepeatingDay()*1440 + a.getStartTime().getHour() * 60 + a.getStartTime().getMinute();
     }
 
